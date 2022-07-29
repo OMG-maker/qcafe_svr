@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.omg.qcafe.mapper.MenuMapper">
+    <select id="getMenuList" resultType="kr.omg.qcafe.model.Menu" parameterType="kr.omg.qcafe.model.Menu">
+        SELECT
+        /*컬럼을 가져올 때엔 해당 컬럼의 데이터들을 아래의 모델 필드에 대입해서 저장해 가져온다*/
+        manager_id as managerId,
+        menu_name as menuName,
+        menu_image_new_name as menuImageNewName,
+        menu_price as menuPrice,
+        menu_explain as menuExplain
+        FROM menu
+        WHERE 1=1
+        /*만약 userId가 비어져있거나 userPassword 가 비어져있지 않다면 아래의 조건에 맞는 컬럼을 엄선해 가져온다*/
+        <if test='managerId != null'>
+            /*user_id가 이쪽(서버)에서 전송하는 userId 값에 맞고,
+            user_password가 이쪽(서버)에서 전송하는 userPassword 값과 동일할 때,
+            해당 컬럼을 가져온다*/
+            and manager_id = #{managerId}
+        </if>
+    </select>
+
+    <select id="getMenuOne" resultType="kr.omg.qcafe.model.Menu" parameterType="kr.omg.qcafe.model.Menu">
+        SELECT
+        /*컬럼을 가져올 때엔 해당 컬럼의 데이터들을 아래의 모델 필드에 대입해서 저장해 가져온다*/
+        manager_id as managerId,
+        menu_name as menuName,
+        menu_image_new_name as menuImageNewName,
+        menu_price as menuPrice,
+        menu_explain as menuExplain
+        FROM menu
+        WHERE 1=1
+        /*만약 userId가 비어져있거나 userPassword 가 비어져있지 않다면 아래의 조건에 맞는 컬럼을 엄선해 가져온다*/
+        <if test='managerId != null'>
+            /*user_id가 이쪽(서버)에서 전송하는 userId 값에 맞고,
+            user_password가 이쪽(서버)에서 전송하는 userPassword 값과 동일할 때,
+            해당 컬럼을 가져온다*/
+            and manager_id = #{managerId}
+            and menu_name = #{menuName}
+        </if>
+    </select>
+
+    <insert id="insertMenu" parameterType="kr.omg.qcafe.model.Menu">
+        INSERT INTO menu (
+            manager_id,
+            menu_name,
+            menu_image_new_name,
+            menu_image_original_name,
+            menu_price,
+            menu_explain
+        ) VALUES (
+                     #{managerId},
+                     #{menuName},
+                     #{menuImageNewName},
+                     #{menuImageOriginalName},
+                     #{menuPrice},
+                     #{menuExplain}
+                 )
+    </insert>
+
+    <insert id="insertMenuSimple" parameterType="kr.omg.qcafe.model.Menu">
+        INSERT INTO menu (
+            manager_id,
+            menu_name,
+            menu_price,
+            menu_explain
+        ) VALUES (
+                     #{managerId},
+                     #{menuName},
+                     #{menuPrice},
+                     #{menuExplain}
+                 )
+    </insert>
+
+    <delete id="deleteMenu" parameterType="kr.omg.qcafe.model.Menu">
+        delete
+            From menu
+        where
+            menu_name= #{menuName}
+    </delete>
+
+    <update id="updateMenuData" parameterType="kr.omg.qcafe.model.Menu">
+        UPDATE menu
+        SET
+        menu_name = #{menuName},
+        menu_price = #{menuPrice},
+        menu_explain = #{menuExplain}
+        WHERE 1=1
+        <if test='managerId != null'>
+            and manager_id = #{managerId}
+            and menu_name = #{menuName}
+        </if>
+    </update>
+</mapper>
+

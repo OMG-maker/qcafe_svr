@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.omg.qcafe.mapper.AdminUserMapper">
+    <select id="getAdminUserList" resultType="kr.omg.qcafe.model.AdminUser"
+            parameterType="kr.omg.qcafe.model.AdminUser">
+        SELECT
+        user_id as userId,
+        manager_id as managerId,
+        count
+        FROM admin_user
+        WHERE 1=1
+        <if test='userId != null'>
+            and user_id = #{userId}
+            and manager_id = #{managerId}
+        </if>
+    </select>
+    <insert id="insertAdminUserList" parameterType="kr.omg.qcafe.model.AdminUser">
+        INSERT INTO admin_user (user_id,
+                                manager_id,
+                                count)
+        VALUES (#{userId},
+                #{managerId},
+                #{count})
+    </insert>
+    <update id="updateAdminUserList" parameterType="kr.omg.qcafe.model.AdminUser">
+        UPDATE admin_user
+        SET
+        count = #{count}
+        WHERE 1=1
+        <if test='userId != null'>
+            and user_id = #{userId}
+            and manager_id = #{managerId}
+        </if>
+    </update>
+</mapper>
+

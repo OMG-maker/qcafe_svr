@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.omg.qcafe.mapper.ManagerMapper">
+    <select id="getManagerList" resultType="kr.omg.qcafe.model.Manager" parameterType="kr.omg.qcafe.model.Manager">
+        SELECT
+            manager_id as managerId,
+            manager_password as managerPassword,
+            store_name as storeName,
+            stamp_img as stampImg,
+            store_image_new_name as storeImageNewName,
+            store_image_original_name as storeImageOriginalName,
+            qr_image_name as qrImageName,
+            stamp_image_new_name as stampImageNewName,
+            stamp_image_original_name as stampImageOriginalName,
+            coupon_image_new_name as couponImageNewName,
+            coupon_image_original_name as couponImageOriginalName,
+            coupon_max_count as couponMaxCount
+        FROM manager
+        WHERE 1=1
+        <if test='managerId != null'>
+            and manager_id = #{managerId}
+            and manager_password = #{managerPassword}
+        </if>
+    </select>
+    <select id="getManagerListForImage" resultType="kr.omg.qcafe.model.Manager" parameterType="kr.omg.qcafe.model.Manager">
+        SELECT
+        manager_id as managerId,
+        manager_password as managerPassword,
+        store_name as storeName,
+        stamp_img as stampImg,
+        store_image_new_name as storeImageNewName,
+        store_image_original_name as storeImageOriginalName,
+        qr_image_name as qrImageName,
+        stamp_image_new_name as stampImageNewName,
+        stamp_image_original_name as stampImageOriginalName,
+        coupon_image_new_name as couponImageNewName,
+        coupon_image_original_name as couponImageOriginalName,
+        coupon_max_count as couponMaxCount
+        FROM manager
+        WHERE 1=1
+        <if test='managerId != null'>
+            and manager_id = #{managerId}
+        </if>
+    </select>
+    <select id="getQrExist" resultType="kr.omg.qcafe.model.Manager" parameterType="kr.omg.qcafe.model.Manager">
+        SELECT
+            qr_image_name as qrImageName
+        FROM manager
+        WHERE 1=1
+        <if test='managerId != null'>
+            and manager_id = #{managerId}
+        </if>
+    </select>
+    <insert id="insertManager" parameterType="kr.omg.qcafe.model.Manager">
+        INSERT INTO manager (
+            manager_id,
+            manager_password,
+            store_name
+        ) VALUES (
+                     #{managerId},
+                     #{managerPassword},
+                     #{storeName}
+                 )
+    </insert>
+    <select id="getStoreSource" resultType="kr.omg.qcafe.model.Manager" parameterType="kr.omg.qcafe.model.Manager">
+        SELECT
+            manager_id as managerId,
+            manager_password as managerPassword,
+            store_name as storeName,
+            stamp_img as stampImg,
+            store_image_new_name as storeImageNewName,
+            store_image_original_name as storeImageOriginalName,
+            qr_image_name as qrImageName
+        FROM manager
+        WHERE 1=1
+        <if test='managerId != null'>
+            and manager_id = #{managerId}
+        </if>
+    </select>
+    <update id="updateStoreImage" parameterType="kr.omg.qcafe.model.Manager">
+        UPDATE manager
+            SET
+              store_image_new_name = #{storeImageNewName},
+              store_image_original_name = #{storeImageOriginalName}
+        WHERE 1=1
+        <if test='managerId != null'>
+            and manager_id = #{managerId}
+            and manager_password = #{managerPassword}
+        </if>
+    </update>
+    <update id="updateStoreName" parameterType="kr.omg.qcafe.model.Manager">
+        UPDATE manager
+        SET
+        store_name = #{storeName}
+        WHERE 1=1
+        <if test='managerId != null'>
+            and manager_id = #{managerId}
+        </if>
+    </update>
+    <update id="setStoreImageInEditStoreActivity" parameterType="kr.omg.qcafe.model.Manager">
+        UPDATE manager
+            SET
+                store_image_new_name = #{storeImageNewName},
+                store_image_original_name = #{storeImageOriginalName}
+        WHERE 1=1
+        <if test='managerId != null'>
+            and manager_id = #{managerId}
+        </if>
+    </update>
+
+    <update id="setStampImageInEditStoreActivity" parameterType="kr.omg.qcafe.model.Manager">
+        UPDATE manager
+            SET
+                stamp_image_new_name = #{stampImageNewName},
+                stamp_image_original_name = #{stampImageOriginalName}
+        WHERE 1=1
+        <if test='managerId != null'>
+            and manager_id = #{managerId}
+        </if>
+    </update>
+
+    <update id="updateQRImage" parameterType="kr.omg.qcafe.model.Manager">
+        UPDATE manager
+        SET
+            qr_image_name = #{qrImageName}
+        WHERE 1=1
+        <if test='managerId != null'>
+            and manager_id = #{managerId}
+        </if>
+    </update>
+
+    <update id="updateCouponCount" parameterType="kr.omg.qcafe.model.Manager">
+        UPDATE manager
+        SET
+        coupon_max_count = #{couponMaxCount}
+        WHERE 1=1
+        <if test='managerId != null'>
+            and manager_id = #{managerId}
+        </if>
+    </update>
+
+
+    <select id="getQrImageName" resultType="kr.omg.qcafe.model.Manager" parameterType="kr.omg.qcafe.model.Manager">
+        SELECT
+        qr_image_name as qrImageName
+        FROM manager
+        WHERE 1=1
+        <if test='managerId != null'>
+            and manager_id = #{managerId}
+        </if>
+    </select>
+    <select id="getStampImageName" resultType="kr.omg.qcafe.model.Manager" parameterType="kr.omg.qcafe.model.Manager">
+        SELECT
+        stamp_image_new_name as stampImageNewName
+        FROM manager
+        WHERE 1=1
+        <if test='managerId != null'>
+            and manager_id = #{managerId}
+        </if>
+    </select>
+    <select id="getStoreImageName" resultType="kr.omg.qcafe.model.Manager" parameterType="kr.omg.qcafe.model.Manager">
+        SELECT
+        store_image_new_name as storeImageNewName
+        FROM manager
+        WHERE 1=1
+        <if test='managerId != null'>
+            and manager_id = #{managerId}
+        </if>
+    </select>
+    <select id="getStoreName" resultType="kr.omg.qcafe.model.Manager" parameterType="kr.omg.qcafe.model.Manager">
+        SELECT
+        store_name as storeName
+        FROM manager
+        WHERE 1=1
+        <if test='managerId != null'>
+            and manager_id = #{managerId}
+        </if>
+    </select>
+
+
+
+</mapper>
+
