@@ -1,4 +1,4 @@
-package kr.omg.qcafe.controller;
+package kr.omg.qcafe.controller.RestController;
 
 import kr.omg.qcafe.model.JpaUser;
 import kr.omg.qcafe.service.JapUserService;
@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/user")
-public class JpaUserContoller {
+@RequestMapping("/jpaUser")
+public class JpaUserController {
 
     @Autowired
     private JapUserService japUserService;

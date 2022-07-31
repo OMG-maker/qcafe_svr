@@ -12,7 +12,10 @@ import kr.omg.qcafe.model.User;
 import kr.omg.qcafe.service.AdminUserService;
 import kr.omg.qcafe.service.ManagerService;
 import kr.omg.qcafe.service.MenuService;
-import kr.omg.qcafe.service.UserService;
+
+// jpa 설정
+//import kr.omg.qcafe.service.UserService;
+
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -38,8 +41,8 @@ public class RestTestController {
     @Autowired
     private AdminUserService adminUserService;
 
-    @Autowired
-    private UserService userService;
+//    @Autowired
+//    private UserService userService;
 
     @Autowired
     private ManagerService managerService;
@@ -58,47 +61,50 @@ public class RestTestController {
         return "getTest";
     }
 
-    //로그인
-    @ResponseBody
-    @PostMapping("/userLoginTest")
-    public String loginTest(@RequestParam("param") String param) {
-        // System.out.println("param : " + param);
-        JSONObject json = new JSONObject(param);
-
-        // User 객체를 만들어서 param 값이 들어있는 json 내부 값들을 저장
-        User user = new User();
-        user.setUserId(String.valueOf(json.get("userId")));
-        user.setUserPassword(String.valueOf(json.get("userPassword")));
-
-        // user 내부값에 부합하는 데이터를 DB에서 가져오기 위한 코드
-        // USer 리스트인 uList 내에 user 내부값에 부합하는 데이터들을 저장
-        List<User> uList = userService.getUserList(user);
-
-        //DB 내부에 존재하며 user 데이터값에 부합하는 컬럼의 수
-        System.out.println("userloginTest" + uList.size());
-
-        // User u 객체를 만들고 uList 의 길이만큼 u 내부에 uList 원소들을 대입하면서 반복문을 진행
-        for (User u : uList) {
-            System.out.println("user_id : " + u.getUserId());
-            System.out.println("password : " + u.getUserPassword());
-        }
-
-        JSONObject result = new JSONObject();
-
-        if (uList.size() == 0) {
-            result.put("code", "N");
-            result.put("msg", "사용자를 찾을 수 없습니다.");
-
-        } else if (uList.size() == 1) {
-            result.put("code", "Y");
-            result.put("msg", "로그인 성공");
-
-        } else {
-            result.put("code", "E");
-            result.put("msg", "알 수 없는 에러가 발생하였습니다.");
-        }
-        return result.toString();
-    }
+//            jpa 설정을 위해 임시로 주석
+//    //로그인
+//    @ResponseBody
+//    @PostMapping("/userLoginTest")
+//    public String loginTest(@RequestParam("param") String param) {
+//        // System.out.println("param : " + param);
+//        JSONObject json = new JSONObject(param);
+//
+//        // User 객체를 만들어서 param 값이 들어있는 json 내부 값들을 저장
+//        User user = new User();
+//        user.setUserId(String.valueOf(json.get("userId")));
+//        user.setUserPassword(String.valueOf(json.get("userPassword")));
+//
+//
+//        // user 내부값에 부합하는 데이터를 DB에서 가져오기 위한 코드
+//        // USer 리스트인 uList 내에 user 내부값에 부합하는 데이터들을 저장
+//
+//        List<User> uList = userService.getUserList(user);
+//
+//        //DB 내부에 존재하며 user 데이터값에 부합하는 컬럼의 수
+//        System.out.println("userloginTest" + uList.size());
+//
+//        // User u 객체를 만들고 uList 의 길이만큼 u 내부에 uList 원소들을 대입하면서 반복문을 진행
+//        for (User u : uList) {
+//            System.out.println("user_id : " + u.getUserId());
+//            System.out.println("password : " + u.getUserPassword());
+//        }
+//
+//        JSONObject result = new JSONObject();
+//
+//        if (uList.size() == 0) {
+//            result.put("code", "N");
+//            result.put("msg", "사용자를 찾을 수 없습니다.");
+//
+//        } else if (uList.size() == 1) {
+//            result.put("code", "Y");
+//            result.put("msg", "로그인 성공");
+//
+//        } else {
+//            result.put("code", "E");
+//            result.put("msg", "알 수 없는 에러가 발생하였습니다.");
+//        }
+//        return result.toString();
+//    }
 
     @ResponseBody
     @PostMapping("/managerLoginTest")
@@ -141,40 +147,41 @@ public class RestTestController {
         return result.toString();
     }
 
-    //회원가입
-    @ResponseBody
-    @PostMapping("/userRegisterTest")
-    public String registerTest(@RequestParam("param") String param) {
-        // 전송받은 param 값을 JSONObject 인 json 에 저장
-        JSONObject json = new JSONObject(param);
-
-        // User 객체를 만들어서 param 값이 들어있는 json 내부 값들을 저장
-        User user = new User();
-        user.setUserId(String.valueOf(json.get("userId")));
-        user.setUserPassword(String.valueOf(json.get("userPassword")));
-        user.setUserNickname(String.valueOf(json.get("userNickname")));
-
-        // user 내부값에 부합하는 데이터를 DB에서 가져오기 위한 코드
-        // USer 리스트인 uList 내에 user 내부값에 부합하는 데이터들을 저장
-        String code = "Y";
-        String msg = "회원가입에 성공하였습니다.";
-
-        try {
-            userService.insertUser(user);
-        } catch (Exception e) {
-            e.printStackTrace();
-            code = "N";
-            msg = "회원가입에 실패하였습니다.";
-        }
-
-        // 전송받은 param에 부합하는 값을 Service 내부 기능에 맞게 DB에서 얻어냈으므로 그 결과를 다시 Client에 전송.
-        // result 는 결과값 전송에 쓰일 JSONObject 변수
-        JSONObject result = new JSONObject();
-        result.put("code", code);
-        result.put("msg", msg);
-
-        return result.toString();
-    }
+//    //            jpa 설정을 위해 임시로 주석
+//    //회원가입
+//    @ResponseBody
+//    @PostMapping("/userRegisterTest")
+//    public String registerTest(@RequestParam("param") String param) {
+//        // 전송받은 param 값을 JSONObject 인 json 에 저장
+//        JSONObject json = new JSONObject(param);
+//
+//        // User 객체를 만들어서 param 값이 들어있는 json 내부 값들을 저장
+//        User user = new User();
+//        user.setUserId(String.valueOf(json.get("userId")));
+//        user.setUserPassword(String.valueOf(json.get("userPassword")));
+//        user.setUserNickname(String.valueOf(json.get("userNickname")));
+//
+//        // user 내부값에 부합하는 데이터를 DB에서 가져오기 위한 코드
+//        // USer 리스트인 uList 내에 user 내부값에 부합하는 데이터들을 저장
+//        String code = "Y";
+//        String msg = "회원가입에 성공하였습니다.";
+//
+//        try {
+////            userService.insertUser(user);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            code = "N";
+//            msg = "회원가입에 실패하였습니다.";
+//        }
+//
+//        // 전송받은 param에 부합하는 값을 Service 내부 기능에 맞게 DB에서 얻어냈으므로 그 결과를 다시 Client에 전송.
+//        // result 는 결과값 전송에 쓰일 JSONObject 변수
+//        JSONObject result = new JSONObject();
+//        result.put("code", code);
+//        result.put("msg", msg);
+//
+//        return result.toString();
+//    }
 
     //회원가입
     @ResponseBody

@@ -19,6 +19,17 @@
         <spring-native.version>0.10.3</spring-native.version>
     </properties>
     <dependencies>
+<!--jpa-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mariadb.jdbc</groupId>
+            <artifactId>mariadb-java-client</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+<!--/jap-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
@@ -122,7 +133,11 @@
             <artifactId>javaSDK</artifactId>
             <version>2.2</version>
         </dependency>
-<!--cool sms-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <!--cool sms-->
 
     </dependencies>
 
